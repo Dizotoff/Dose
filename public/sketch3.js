@@ -5,6 +5,8 @@ var h = 1000;
 var mic, fft;
 var angle = 0;
 var flying = 0;
+var speed = 1;
+var control = 1;
 
 var terrain = [];
 
@@ -41,8 +43,8 @@ function draw() {
 
 push();
   background(255);
-  translate(0, 100);
-  rotateX(PI/2.2);
+  translate(0, 100*speed);
+  rotateX(PI/2.2*control);
   fill(200,200,200, 50);
   translate(-w/2, -h/2);
   for (var y = 0; y < rows-1; y++) {
@@ -71,19 +73,20 @@ texture(logo);
     pop();
 
 
-push();
-    translate(200,-450);
-rotateY(0);
-rotateX(0);
-rotateZ(0);
-    beginShape();
-       for (i = 0; i<spectrum.length; i++) {
-        vertex(i, map(spectrum[i], 0, 255, height, 0) );
-       }
-       endShape();
-
-pop();
 
 angle += 0.03;
 
+speedcontrol();
+}
+
+function speedcontrol() {
+  if (keyCode === RIGHT_ARROW) {
+    speed = speed+0.1;
+  } else if (keyCode === LEFT_ARROW) {
+    speed = speed-0.1;
+  } else if (keyCode === UP_ARROW) {
+    control = control+0.1;
+  } else if (keyCode === DOWN_ARROW) {
+    control = control-0.1;
+  }
 }
