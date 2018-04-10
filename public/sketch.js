@@ -1,51 +1,59 @@
-var mic, fft, capture;
-let angle = 0;
+var mic, fft, vhs, cam;
+var stars = [];
+let c = 4;
+var speed;
 
 function setup() {
-  createCanvas(windowWidth, windowHeight, WEBGL);
-  cam = createCapture(VIDEO);
-  cam.size(1080, 520);
-  vhs= createVideo(["vhs.mp4"]);
-  vhs.loop();
-  vhs.hide();
-  cam.hide();
-   mic = new p5.AudioIn();
-   mic.start();
-   fft = new p5.FFT();
-   fft.setInput(mic);
-
-
+  createCanvas(windowWidth-c, windowHeight-c);
+  colorMode(HSB);
+  mic = new p5.AudioIn();
+  mic.start();
+  fft = new p5.FFT(0.5, 256);
+  fft.setInput(mic);
 
 }
 
 function draw() {
+  var spectrum = fft.analyze();
 
-  ambientLight(255);
-  background(200);
-   rotateZ(HALF_PI);
-   ambientMaterial(255);
-   texture(vhs);
-plane(1000,1000);
+  background(255);
 
 
-
-
-
-
-  push();
-  rotateZ(angle * 1.2);
+push();
   noStroke();
-    texture(cam);
-  plane(500, 500);
-  angle -= 0.01;
+translate(windowWidth/4, windowHeight/2);
+  //beginShape();
+  for (var i = 0; i < spectrum.length; i++) {
+    var angle = map(i, 0, spectrum.length, 0, 360);
+    var amp = spectrum[i];
+    var r = map(amp*10, 0, 256, 20, 100);
+    //fill(i, 255, 255);
+    var x = r * cos(angle);
+    var y = r * sin(angle);
+    stroke(i, 0, 0);
+    line(0, 0, x, y);
+  }
+pop();
 
-  /* beginShape();
-   for (i = 0; i<spectrum.length; i++) {
-    vertex(i, map(spectrum[i], 0, 255, height, 0) );
-   }
-   endShape();
-   */
+push();
+  noStroke();
+translate(windowWidth/4*3, windowHeight/2);
+  //beginShape();
+  for (var i = 0; i < spectrum.length; i++) {
+    var angle = map(i, 0, spectrum.length, 0, 360);
+    var amp = spectrum[i];
+    var r = map(amp*10, 100, 256, 20, 100);
+    //fill(i, 255, 255);
+    var x = r * cos(angle);
+    var y = r * sin(angle);
+    stroke(i, 0, 0);
+    line(0, 0, x*2, y*2);
 
+    //vertex(x, y);
+    //var y = map(amp, 0, 256, height, 0);
+    //rect(i * w, y, w - 2, height - y);
+  }
+pop();
 
 
 }
