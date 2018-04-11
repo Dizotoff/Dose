@@ -7,7 +7,7 @@ var angle = 0;
 var flying = 0;
 var speed = 1;
 var control = 1;
-
+var k = 1;
 var terrain = [];
 
 function setup() {
@@ -68,7 +68,7 @@ rotateX(angle);
 rotateY(angle);
 rotateZ(angle);
 texture(logo);
-    plane(330, 127);
+    plane(330*k, 127*k);
 
     pop();
 
@@ -88,5 +88,10 @@ function speedcontrol() {
     control = control+0.1;
   } else if (keyCode === DOWN_ARROW) {
     control = control-0.1;
+  } else if (keyCode === 65) {
+    k = k+0.1;
+  } else if (keyCode === 90) {
+    k = k-0.1;
   }
+
 }
