@@ -74,7 +74,7 @@ texture(logo);
 
 
 
-angle += 0.03;
+angle += 0.02;
 
 speedcontrol();
 }
